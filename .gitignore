@@ -352,3 +352,6 @@ obj
 .DS_Store
 .vs
 node_modules
+
+# added
+.tmp
