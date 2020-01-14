@@ -204,7 +204,7 @@ namespace StudentExercisesMVC.Controllers
         // GET: Students/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var departments = GetCohorts().Select(d => new SelectListItem
+            var cohorts = GetCohorts().Select(d => new SelectListItem
             {
                 Text = d.Name,
                 Value = d.Id.ToString()
@@ -217,14 +217,14 @@ namespace StudentExercisesMVC.Controllers
                 var viewModel = new StudentViewModel
                 {
                     Student = students[0],
-                    Cohorts = departments
+                    Cohorts = cohorts
                 };
 
                 return View(viewModel);
             }
             else
             {
-                return View();
+                return NotFound();
             }
         }
 
@@ -274,9 +274,30 @@ namespace StudentExercisesMVC.Controllers
         }
 
         // GET: Students/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var cohorts = GetCohorts().Select(d => new SelectListItem
+            {
+                Text = d.Name,
+                Value = d.Id.ToString()
+            }).ToList();
+
+            if (id > 0)
+            {
+                var students = await List(id);
+
+                var viewModel = new StudentViewModel
+                {
+                    Student = students[0],
+                    Cohorts = cohorts
+                };
+
+                return View(viewModel);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // POST: Students/Delete/5
