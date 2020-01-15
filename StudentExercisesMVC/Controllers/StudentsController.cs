@@ -174,7 +174,6 @@ namespace StudentExercisesMVC.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 using (SqlConnection conn = Connection)
                 {
                     conn.Open();
@@ -235,7 +234,6 @@ namespace StudentExercisesMVC.Controllers
         {
             try
             {
-                // TODO: Add update logic here
                 using (SqlConnection conn = Connection)
                 {
                     conn.Open();
@@ -307,17 +305,27 @@ namespace StudentExercisesMVC.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"DELETE FROM Student WHERE Id = @id";
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
 
-                return RedirectToAction(nameof(Index));
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        return RedirectToAction( nameof(Index) );
+                    }
+                }
             }
             catch
             {
-                return View();
+                return NotFound();
             }
         }
 
-        
+
         private List<Cohort> GetCohorts()
         {
             using ( SqlConnection conn = Connection )
